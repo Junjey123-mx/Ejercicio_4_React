@@ -1,32 +1,35 @@
 # Rock & Pop Archive
 
-Mini-blog musical construido con Vite + React + React Router.
+Mini-blog musical construido con **Vite + React + React Router v6**.  
+Muestra artistas de rock y pop, permite buscar, explorar detalles con datos de TheAudioDB y guardar favoritos con Context API.
 
 ## Nivel seleccionado
 
-Este proyecto apunta al **nivel Senior (100 puntos)**.
+**Senior — 100 puntos**
 
-### Junior
-- Proyecto generado con `npm create vite@latest`.
-- Uso de React.
-- Uso de React Router.
-- Rutas mínimas: `/`, `/items`, `/items/:id`.
-- Datos base separados en `src/data/artists.js`.
-- Uso de `useParams` en la vista de detalle.
-- Navegación con `Link` y `NavLink`, nunca con `<a>`.
-- README con instrucciones.
-- Video de demostración en `/demo`.
+---
 
-### Mid
-- Página 404 para rutas no encontradas.
-- Búsqueda/filtro en el listado.
-- Botón de artista aleatorio usando `useNavigate`.
-- Componentes reutilizables con props documentadas en README.
+## Tecnologías
 
-### Senior
-- Estado global con Context API para favoritos.
-- Al menos 3 componentes con PropTypes.
-- Consumo de API pública: TheAudioDB.
+| Herramienta | Versión |
+|---|---|
+| React | 19 |
+| react-router-dom | ^6.30 |
+| prop-types | ^15.8 |
+| Vite | 8 |
+| TheAudioDB API | v1 (pública, key `123`) |
+
+---
+
+## Rutas disponibles
+
+| Ruta | Componente | Descripción |
+|---|---|---|
+| `/` | `Home` | Pantalla de bienvenida con enlace al listado |
+| `/items` | `Items` | Listado con búsqueda/filtro y botón aleatorio |
+| `/items/:id` | `ItemDetail` | Detalle del artista: API, imagen, discografía y favorito |
+| `/favorites` | `Favorites` | Artistas guardados como favoritos |
+| `*` | `NotFound` | Página 404 |
 
 ---
 
@@ -37,15 +40,25 @@ npm install
 npm run dev
 ```
 
-Abrir: http://localhost:5173
+Abrir: **http://localhost:5173**
+
+---
 
 ## Variables de entorno
-
-Crear un archivo `.env` con base en `.env.example`:
 
 ```bash
 cp .env.example .env
 ```
+
+`.env.example`:
+
+```
+VITE_AUDIODB_KEY=123
+```
+
+La key `123` es pública y funciona sin registro previo.
+
+---
 
 ## Ejecución con Docker
 
@@ -53,7 +66,7 @@ cp .env.example .env
 docker compose up --build
 ```
 
-Abrir: http://localhost:5173
+Abrir: **http://localhost:5173**
 
 Para apagar:
 
@@ -63,59 +76,109 @@ docker compose down
 
 ---
 
+## API utilizada
+
+**TheAudioDB** — `https://www.theaudiodb.com/api/v1/json/{API_KEY}`
+
+| Endpoint | Uso |
+|---|---|
+| `/search.php?s={nombre}` | Información del artista |
+| `/searchalbum.php?s={nombre}` | Álbumes del artista |
+
+El servicio vive en `src/services/audioDbApi.js`.  
+Los datos base locales viven en `src/data/artists.js`.  
+Ningún componente hardcodea listas de artistas.
+
+---
+
 ## Componentes reutilizables
 
 ### ArtistCard
 
-Muestra una tarjeta de artista.
+Muestra una tarjeta con los datos principales del artista y enlace al detalle.
 
-| Prop | Tipo | Descripción |
+| Prop | Tipo | Requerida |
 |---|---|---|
-| `artist.id` | string | Identificador único del artista |
-| `artist.name` | string | Nombre del artista |
-| `artist.genre` | string | Género musical |
-| `artist.description` | string | Descripción breve |
+| `artist.id` | `string` | ✓ |
+| `artist.name` | `string` | ✓ |
+| `artist.genre` | `string` | ✓ |
+| `artist.country` | `string` | ✓ |
+| `artist.description` | `string` | ✓ |
 
 ### SearchBar
 
-Input controlado para búsqueda.
+Input controlado para filtrar artistas por nombre, género o país.
 
-| Prop | Tipo | Descripción |
+| Prop | Tipo | Requerida |
 |---|---|---|
-| `value` | string | Valor actual del input |
-| `onChange` | function | Manejador del cambio |
+| `value` | `string` | ✓ |
+| `onChange` | `func` | ✓ |
 
 ### AlbumCard
 
-Muestra la portada de un álbum.
+Muestra la portada, nombre y año de un álbum de TheAudioDB.
 
-| Prop | Tipo | Descripción |
+| Prop | Tipo | Requerida |
 |---|---|---|
-| `album.strAlbum` | string | Nombre del álbum |
-| `album.strAlbumThumb` | string | URL de la portada |
-| `album.intYearReleased` | string | Año de lanzamiento |
+| `album.idAlbum` | `string` | ✓ |
+| `album.strAlbum` | `string` | ✓ |
+| `album.strAlbumThumb` | `string` | — |
+| `album.intYearReleased` | `string` | — |
 
 ### FavoriteButton
 
-Permite agregar o quitar un artista de favoritos.
+Agrega o quita un artista de favoritos usando `FavoritesContext`.
 
-| Prop | Tipo | Descripción |
+| Prop | Tipo | Requerida |
 |---|---|---|
-| `artist` | object | Objeto completo del artista |
+| `artist` | `object` | ✓ |
+
+Hooks del contexto: `useFavoritesState()`, `useFavoritesDispatch()`.
 
 ---
 
-## Demo
+## Rúbrica de cumplimiento
 
-El video de demostración se encuentra en `/demo/demo-routes.mp4`.
+### Junior ✓
 
-El video muestra:
+- [x] Proyecto generado con `npm create vite@latest`
+- [x] Uso de React
+- [x] Rutas `/`, `/items`, `/items/:id` con React Router v6
+- [x] Datos base en `src/data/artists.js`
+- [x] `useParams` en `ItemDetail`
+- [x] Navegación con `Link` / `NavLink`, nunca con `<a>`
+- [x] README con instrucciones
+- [ ] Video demo en `/demo/demo-routes.mp4` — **pendiente grabar**
 
-- Ruta `/`.
-- Ruta `/items`.
-- Filtro de búsqueda.
-- Botón aleatorio.
-- Ruta `/items/:id`.
-- Agregar favorito.
-- Ruta `/favorites`.
-- Ruta 404.
+### Mid ✓
+
+- [x] Página 404 (`*` → `NotFound`)
+- [x] Ruta `/favorites`
+- [x] Filtro de búsqueda en `/items` (nombre, género, país)
+- [x] Botón "Artista aleatorio" con `useNavigate`
+- [x] Componentes reutilizables con props documentadas
+
+### Senior ✓
+
+- [x] Estado global con Context API + `useReducer` (`FavoritesContext`)
+- [x] PropTypes en 5 componentes: `ArtistCard`, `SearchBar`, `AlbumCard`, `FavoriteButton`, `ErrorMessage`
+- [x] Consumo de API pública: TheAudioDB (imagen, biografía, discografía)
+
+---
+
+## Video demo
+
+> ⚠️ El video de demostración **debe colocarse en `/demo/demo-routes.mp4`** antes de la entrega final.  
+> El archivo no está incluido en el repositorio; el directorio `/demo` existe con un `.gitkeep`.
+
+El video debe mostrar:
+
+1. Ruta `/` — pantalla de bienvenida
+2. Ruta `/items` — grid de tarjetas de artistas
+3. Filtro de búsqueda en tiempo real
+4. Botón "Artista aleatorio" navegando a un detalle
+5. Ruta `/items/:id` — imagen y álbumes cargados desde la API
+6. Click en "Agregar a favoritos" en el detalle
+7. Ruta `/favorites` — artista guardado visible
+8. "Quitar de favoritos" o "Limpiar todos"
+9. Ruta inexistente → página 404

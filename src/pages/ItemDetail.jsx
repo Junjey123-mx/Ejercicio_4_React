@@ -5,6 +5,7 @@ import { getArtistByName, getArtistAlbums } from '../services/audioDbApi'
 import AlbumCard from '../components/AlbumCard'
 import LoadingMessage from '../components/LoadingMessage'
 import ErrorMessage from '../components/ErrorMessage'
+import FavoriteButton from '../components/FavoriteButton'
 import './ItemDetail.css'
 
 function ItemDetail() {
@@ -78,6 +79,7 @@ function ItemDetail() {
               <p className="detail-page__bio">
                 {artistInfo?.strBiographyEN || localArtist.description}
               </p>
+              <FavoriteButton artist={localArtist} />
             </div>
           </div>
 
