@@ -34,3 +34,17 @@ h3 {
 p {
   margin: 0;
 }
+
+.loading-msg {
+  text-align: center;
+  color: #888;
+  padding: 2rem;
+  font-size: 1rem;
+}
+
+.error-msg {
+  text-align: center;
+  color: #f87171;
+  padding: 1rem;
+  font-size: 0.9rem;
+}

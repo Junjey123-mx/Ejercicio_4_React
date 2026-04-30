@@ -1,5 +1,5 @@
 function LoadingMessage() {
-  return <div>LoadingMessage</div>;
+  return <p className="loading-msg">Cargando…</p>
 }
 
-export default LoadingMessage;
+export default LoadingMessage

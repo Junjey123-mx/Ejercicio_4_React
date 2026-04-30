@@ -1,5 +1,11 @@
-function ErrorMessage() {
-  return <div>ErrorMessage</div>;
+import PropTypes from 'prop-types'
+
+function ErrorMessage({ message }) {
+  return <p className="error-msg">Error: {message}</p>
 }
 
-export default ErrorMessage;
+ErrorMessage.propTypes = {
+  message: PropTypes.string.isRequired,
+}
+
+export default ErrorMessage
