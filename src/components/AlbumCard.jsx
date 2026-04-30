@@ -11,7 +11,7 @@ function AlbumCard({ album }) {
           className="album-card__cover"
         />
       ) : (
-        <div className="album-card__cover album-card__cover--placeholder" />
+        <div className="album-card__cover album-card__cover--placeholder">💿</div>
       )}
       <div className="album-card__info">
         <h3 className="album-card__title">{album.strAlbum}</h3>

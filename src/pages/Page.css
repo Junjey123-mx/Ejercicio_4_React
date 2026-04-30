@@ -1,30 +1,45 @@
 .page {
-  padding: 3rem 1.5rem;
+  flex: 1;
+  padding: 5rem 1.5rem;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.page__icon {
+  display: block;
+  font-size: 3.5rem;
+  margin-bottom: 0.75rem;
 }
 
 .page h1 {
-  font-size: 2.2rem;
-  margin-bottom: 1rem;
+  font-size: 2.4rem;
+  margin-bottom: 0.75rem;
+  color: var(--text);
 }
 
 .page__subtitle {
-  color: #888;
+  color: var(--muted);
   font-size: 1rem;
   margin-bottom: 2rem;
+  max-width: 400px;
 }
 
 .page__btn {
   display: inline-block;
-  padding: 0.6rem 1.4rem;
-  background: #c084fc;
+  padding: 0.7rem 1.6rem;
+  background: var(--accent);
   color: #fff;
   text-decoration: none;
-  border-radius: 6px;
+  border-radius: 999px;
   font-size: 0.95rem;
-  transition: background 0.2s;
+  font-weight: 500;
+  transition: background 0.2s, transform 0.15s;
 }
 
 .page__btn:hover {
-  background: #a855f7;
+  background: var(--accent-strong);
+  transform: translateY(-2px);
 }

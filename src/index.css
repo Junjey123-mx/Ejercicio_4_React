@@ -1,10 +1,9 @@
+/* ─── Base reset ─────────────────────────────────── */
+
 :root {
   --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
   font-family: var(--sans);
   font-size: 16px;
-  color-scheme: light dark;
-  background: #0f0f0f;
-  color: #e5e5e5;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -16,6 +15,7 @@
 
 body {
   margin: 0;
+  background: #0d0d0f;
 }
 
 #root {
@@ -35,16 +35,96 @@ p {
   margin: 0;
 }
 
+/* ─── App wrapper with theme ─────────────────────── */
+
+.app {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  color: var(--text);
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* ─── Dark theme ─────────────────────────────────── */
+
+.app--dark {
+  --bg: #0d0d0f;
+  --surface: #18181b;
+  --surface-strong: #27272a;
+  --text: #f4f4f5;
+  --muted: #a1a1aa;
+  --border: #3f3f46;
+  --accent: #c084fc;
+  --accent-strong: #a855f7;
+  --shadow: 0 4px 24px rgba(0, 0, 0, 0.45);
+  --chip-bg: #2d2640;
+  --chip-text: #c084fc;
+  --radius: 10px;
+}
+
+/* ─── Light theme ────────────────────────────────── */
+
+.app--light {
+  --bg: #f6f7fb;
+  --surface: #ffffff;
+  --surface-strong: #eeeef3;
+  --text: #18181b;
+  --muted: #71717a;
+  --border: #e4e4e7;
+  --accent: #7c3aed;
+  --accent-strong: #6d28d9;
+  --shadow: 0 4px 24px rgba(0, 0, 0, 0.09);
+  --chip-bg: #ede9fe;
+  --chip-text: #7c3aed;
+  --radius: 10px;
+}
+
+/* ─── Animations ─────────────────────────────────── */
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in  { animation: fadeIn  0.45s ease both; }
+.slide-up { animation: slideUp 0.5s  ease both; }
+
+/* ─── Chip / pill utility ────────────────────────── */
+
+.chip {
+  display: inline-block;
+  padding: 0.22rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  background: var(--chip-bg);
+  color: var(--chip-text);
+  white-space: nowrap;
+}
+
+/* ─── Loading / Error ────────────────────────────── */
+
 .loading-msg {
   text-align: center;
-  color: #888;
-  padding: 2rem;
+  color: var(--muted);
+  padding: 3rem 1.5rem;
   font-size: 1rem;
+  animation: fadeIn 0.3s ease;
 }
 
 .error-msg {
   text-align: center;
   color: #f87171;
-  padding: 1rem;
+  padding: 1rem 1.5rem;
   font-size: 0.9rem;
+  background: rgba(248, 113, 113, 0.08);
+  border: 1px solid rgba(248, 113, 113, 0.2);
+  border-radius: 8px;
+  margin: 1rem 0;
 }

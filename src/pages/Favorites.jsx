@@ -9,20 +9,22 @@ function Favorites() {
 
   return (
     <main className="fav-page">
-      <h1>Mis favoritos</h1>
+      <h1 className="fav-page__title">Mis favoritos</h1>
 
       {favorites.length === 0 ? (
-        <>
-          <p className="fav-page__empty">
-            No has marcado ningún artista como favorito todavía.
-          </p>
+        <div className="fav-page__empty">
+          <span className="fav-page__empty-icon">⭐</span>
+          <p>No has marcado ningún artista como favorito todavía.</p>
           <Link to="/items" className="fav-page__explore-link">
-            Explorar artistas
+            🎸 Explorar artistas
           </Link>
-        </>
+        </div>
       ) : (
         <>
           <div className="fav-page__actions">
+            <span className="fav-page__count">
+              {favorites.length} artista{favorites.length !== 1 ? 's' : ''}
+            </span>
             <button
               className="fav-page__clear-btn"
               onClick={() => dispatch({ type: 'CLEAR_FAVORITES' })}

@@ -1,46 +1,79 @@
 .fav-page {
+  flex: 1;
   max-width: 1100px;
   margin: 0 auto;
   padding: 3rem 1.5rem;
+  animation: fadeIn 0.35s ease;
 }
 
-.fav-page h1 {
+.fav-page__title {
   font-size: 2rem;
   text-align: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
+  color: var(--text);
 }
+
+/* ─── Empty state ────────────────────────────────── */
 
 .fav-page__empty {
   text-align: center;
-  color: #888;
-  margin-bottom: 1.5rem;
+  padding-top: 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.fav-page__empty-icon {
+  font-size: 3.5rem;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.fav-page__empty p {
+  color: var(--muted);
+  font-size: 1rem;
 }
 
 .fav-page__explore-link {
-  display: block;
-  text-align: center;
-  color: #c084fc;
+  display: inline-block;
+  margin-top: 0.5rem;
+  padding: 0.7rem 1.6rem;
+  background: var(--accent);
+  color: #fff;
   text-decoration: none;
-  font-size: 0.95rem;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: background 0.2s, transform 0.15s;
 }
 
 .fav-page__explore-link:hover {
-  text-decoration: underline;
+  background: var(--accent-strong);
+  transform: translateY(-2px);
 }
+
+/* ─── With favorites ─────────────────────────────── */
 
 .fav-page__actions {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 1.2rem;
 }
 
+.fav-page__count {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
 .fav-page__clear-btn {
-  padding: 0.45rem 1rem;
+  padding: 0.45rem 1.1rem;
   background: transparent;
   border: 1px solid #f87171;
   color: #f87171;
-  border-radius: 6px;
-  font-size: 0.85rem;
+  border-radius: 999px;
+  font-size: 0.84rem;
   font-family: inherit;
   cursor: pointer;
   transition: background 0.2s, color 0.2s;

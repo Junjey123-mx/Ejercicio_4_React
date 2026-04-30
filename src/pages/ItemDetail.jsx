@@ -36,16 +36,21 @@ function ItemDetail() {
   if (!localArtist) {
     return (
       <main className="detail-page">
-        <h1>Artista no encontrado</h1>
-        <Link to="/items" className="detail-page__back">
-          ← Volver al listado
-        </Link>
+        <div className="detail-page__not-found">
+          <span className="detail-page__not-found-icon">🎧</span>
+          <h1>Artista no encontrado</h1>
+          <Link to="/items" className="detail-page__back">
+            ← Volver al listado
+          </Link>
+        </div>
       </main>
     )
   }
 
-  const image =
-    artistInfo?.strArtistThumb || artistInfo?.strArtistFanart || null
+  const image = artistInfo?.strArtistThumb || artistInfo?.strArtistFanart || null
+  const genre = artistInfo?.strGenre || localArtist.genre
+  const country = artistInfo?.strCountry || localArtist.country
+  const bio = artistInfo?.strBiographyEN || localArtist.description
 
   return (
     <main className="detail-page">
@@ -66,26 +71,22 @@ function ItemDetail() {
                 className="detail-page__img"
               />
             ) : (
-              <div className="detail-page__img-placeholder" />
+              <div className="detail-page__img-placeholder">🎸</div>
             )}
             <div className="detail-page__info">
               <h1>{localArtist.name}</h1>
-              <p className="detail-page__genre">
-                {artistInfo?.strGenre || localArtist.genre}
-              </p>
-              <p className="detail-page__country">
-                {artistInfo?.strCountry || localArtist.country}
-              </p>
-              <p className="detail-page__bio">
-                {artistInfo?.strBiographyEN || localArtist.description}
-              </p>
+              <div className="detail-page__chips">
+                <span className="chip">{genre}</span>
+                <span className="chip">{country}</span>
+              </div>
+              <p className="detail-page__bio">{bio}</p>
               <FavoriteButton artist={localArtist} />
             </div>
           </div>
 
           {albums.length > 0 && (
             <section className="detail-page__albums">
-              <h2>Discografía</h2>
+              <h2>Discografía ({albums.length} álbumes)</h2>
               <div className="detail-page__albums-grid">
                 {albums.map(album => (
                   <AlbumCard key={album.idAlbum} album={album} />

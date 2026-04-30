@@ -1,26 +1,28 @@
 .fav-btn {
-  padding: 0.5rem 1.2rem;
+  padding: 0.5rem 1.25rem;
   background: transparent;
-  border: 1px solid #c084fc;
-  color: #c084fc;
-  border-radius: 6px;
-  font-size: 0.88rem;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  border-radius: 999px;
+  font-size: 0.87rem;
   font-family: inherit;
+  font-weight: 500;
   cursor: pointer;
-  transition: background 0.2s, color 0.2s, border-color 0.2s;
   margin-top: 0.5rem;
+  transition: background 0.2s, color 0.2s, border-color 0.2s, transform 0.15s;
 }
 
 .fav-btn:hover {
-  background: rgba(192, 132, 252, 0.12);
+  background: var(--chip-bg);
+  transform: scale(1.03);
 }
 
 .fav-btn--active {
-  background: #c084fc;
+  background: var(--accent);
   color: #fff;
 }
 
 .fav-btn--active:hover {
-  background: #a855f7;
-  border-color: #a855f7;
+  background: var(--accent-strong);
+  border-color: var(--accent-strong);
 }

@@ -1,40 +1,102 @@
 .navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 1.5rem;
-  height: 56px;
-  background: #111;
-  border-bottom: 1px solid #333;
+  height: 60px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(8px);
+  transition: background 0.3s, border-color 0.3s;
 }
 
 .navbar__brand {
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   font-weight: 700;
-  color: #fff;
+  color: var(--text);
   text-decoration: none;
-  letter-spacing: 0.5px;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  transition: color 0.2s;
+}
+
+.navbar__brand:hover {
+  color: var(--accent);
+}
+
+.navbar__right {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .navbar__links {
   display: flex;
-  gap: 1.5rem;
+  align-items: center;
+  gap: 0.1rem;
 }
 
 .navbar__link {
-  color: #ccc;
+  position: relative;
+  padding: 0.45rem 0.8rem;
+  color: var(--muted);
   text-decoration: none;
-  font-size: 0.95rem;
-  padding: 4px 0;
-  border-bottom: 2px solid transparent;
-  transition: color 0.2s, border-color 0.2s;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  transition: color 0.2s;
+}
+
+/* Animated underline */
+.navbar__link::after {
+  content: '';
+  position: absolute;
+  bottom: 4px;
+  left: 0.8rem;
+  right: 0.8rem;
+  height: 2px;
+  background: var(--accent);
+  border-radius: 999px;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.22s ease;
 }
 
 .navbar__link:hover {
-  color: #fff;
+  color: var(--text);
+}
+
+.navbar__link:hover::after {
+  transform: scaleX(0.65);
 }
 
 .navbar__link--active {
-  color: #fff;
-  border-bottom-color: #c084fc;
+  color: var(--text);
+  font-weight: 500;
+}
+
+.navbar__link--active::after {
+  transform: scaleX(1);
+}
+
+.navbar__theme-btn {
+  padding: 0.35rem 0.85rem;
+  background: var(--surface-strong);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-family: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+  margin-left: 0.5rem;
+  transition: background 0.2s, border-color 0.2s, transform 0.15s;
+}
+
+.navbar__theme-btn:hover {
+  background: var(--chip-bg);
+  border-color: var(--accent);
+  transform: scale(1.05);
 }

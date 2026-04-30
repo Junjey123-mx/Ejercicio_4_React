@@ -24,16 +24,22 @@ function Items() {
   return (
     <main className="items-page">
       <h1 className="items-page__heading">Artistas</h1>
-      <SearchBar value={query} onChange={e => setQuery(e.target.value)} />
-      <div className="items-page__actions">
+      <p className="items-page__subheading">
+        {artists.length} artistas · filtra por nombre, género o país
+      </p>
+
+      <div className="items-page__toolbar">
+        <SearchBar value={query} onChange={e => setQuery(e.target.value)} />
         <button className="items-page__random-btn" onClick={handleRandom}>
-          Artista aleatorio
+          ✨ Artista aleatorio
         </button>
       </div>
+
       {filtered.length === 0 ? (
-        <p className="items-page__empty">
+        <div className="items-page__empty">
+          <span className="items-page__empty-icon">🔎</span>
           No se encontraron artistas para &ldquo;{query}&rdquo;.
-        </p>
+        </div>
       ) : (
         <div className="items-page__grid">
           {filtered.map(artist => (
