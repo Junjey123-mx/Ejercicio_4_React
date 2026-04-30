@@ -1,23 +1,146 @@
 # Rock & Pop Archive
 
-Mini-blog musical construido con **Vite + React + React Router v6**.  
-Muestra artistas de rock y pop, permite buscar, explorar detalles con datos de TheAudioDB y guardar favoritos con Context API.
-
-## Nivel seleccionado
-
-**Senior — 100 puntos**
+Mini-blog musical desarrollado con Vite, React y React Router DOM v6.  
+El proyecto permite explorar artistas de rock y pop, buscar dentro del listado, consultar detalles usando una ruta dinámica, consumir información visual desde TheAudioDB y guardar artistas favoritos mediante estado global con Context API.
 
 ---
 
-## Tecnologías
+## Nivel seleccionado
 
-| Herramienta | Versión |
-|---|---|
-| React | 19 |
-| react-router-dom | ^6.30 |
-| prop-types | ^15.8 |
-| Vite | 8 |
-| TheAudioDB API | v1 (pública, key `123`) |
+Este proyecto apunta al **nivel Senior (100 puntos)**.
+
+---
+
+## Tema del proyecto
+
+Rock & Pop Archive es un archivo musical interactivo enfocado en artistas de rock, pop y géneros relacionados. La aplicación permite:
+
+- Explorar un listado de artistas con tarjetas reutilizables.
+- Buscar por nombre, género o país en tiempo real.
+- Abrir la página de detalle de cada artista mediante rutas dinámicas.
+- Consultar información obtenida desde TheAudioDB: imagen, biografía y discografía.
+- Ver imágenes y álbumes relacionados cargados desde la API.
+- Guardar artistas favoritos con estado global persistente en la sesión.
+- Cambiar entre tema claro y oscuro con preferencia guardada en `localStorage`.
+- Navegar a un artista aleatorio con un solo clic.
+
+---
+
+## Tecnologías utilizadas
+
+| Herramienta | Versión | Uso |
+|---|---|---|
+| Vite | 8 | Scaffolding y bundler |
+| React | 19 | Biblioteca de UI |
+| React Router DOM | ^6.30 | Enrutamiento SPA |
+| Context API | — | Estado global (favoritos y tema) |
+| `useReducer` | — | Lógica de favoritos centralizada |
+| PropTypes | ^15.8 | Validación de props en componentes |
+| TheAudioDB API | v1 | Datos de artistas y álbumes |
+| CSS puro | — | Estilos con variables CSS temáticas |
+| Docker | — | Contenerización del entorno de desarrollo |
+| Docker Compose | — | Orquestación del contenedor frontend |
+
+---
+
+## Estructura principal del repositorio
+
+```txt
+rock-pop-blog/
+├── demo/
+│   └── demo-routes.mp4          ← video de demostración
+├── public/
+├── src/
+│   ├── components/
+│   │   ├── AlbumCard.jsx        ← muestra portada, nombre y año de álbum
+│   │   ├── ArtistCard.jsx       ← tarjeta reutilizable de artista
+│   │   ├── ErrorMessage.jsx     ← mensaje de error genérico
+│   │   ├── FavoriteButton.jsx   ← agrega/quita favorito con Context API
+│   │   ├── FeatureCard.jsx      ← bloque visual en la página Home
+│   │   ├── LoadingMessage.jsx   ← indicador de carga
+│   │   ├── Navbar.jsx           ← barra de navegación con NavLink y toggle de tema
+│   │   └── SearchBar.jsx        ← input controlado para búsqueda
+│   ├── context/
+│   │   ├── FavoritesContext.jsx ← Context API + useReducer para favoritos
+│   │   └── ThemeContext.jsx     ← Context API + localStorage para tema
+│   ├── data/
+│   │   └── artists.js           ← datos base de 10 artistas (separados del componente)
+│   ├── pages/
+│   │   ├── Favorites.jsx        ← ruta /favorites
+│   │   ├── Home.jsx             ← ruta /
+│   │   ├── ItemDetail.jsx       ← ruta /items/:id con useParams
+│   │   ├── Items.jsx            ← ruta /items con búsqueda y artista aleatorio
+│   │   └── NotFound.jsx         ← ruta * (404)
+│   ├── services/
+│   │   └── audioDbApi.js        ← funciones fetch a TheAudioDB
+│   ├── App.jsx                  ← BrowserRouter + Routes + useTheme
+│   ├── index.css                ← variables CSS temáticas + animaciones
+│   └── main.jsx                 ← providers ThemeProvider + FavoritesProvider
+├── .dockerignore
+├── .env.example
+├── .gitignore
+├── Dockerfile
+├── docker-compose.yml
+├── package.json
+└── README.md
+```
+
+---
+
+## Instalación local
+
+**Requisitos previos:** Node.js 18 o superior.
+
+```bash
+# 1. Clonar el repositorio
+git clone <URL-del-repositorio>
+cd rock-pop-blog
+
+# 2. Instalar dependencias
+npm install
+
+# 3. Configurar variables de entorno
+cp .env.example .env
+
+# 4. Iniciar el servidor de desarrollo
+npm run dev
+```
+
+Abrir en el navegador: **http://localhost:5173**
+
+---
+
+## Variables de entorno
+
+El archivo `.env.example` contiene la configuración mínima necesaria:
+
+```
+VITE_AUDIODB_KEY=123
+```
+
+La key `123` es pública y no requiere registro. El servicio de API tiene un fallback a `"123"` por si la variable no está definida.
+
+El archivo `.env` está excluido del repositorio mediante `.gitignore`.
+
+---
+
+## Ejecución con Docker
+
+El proyecto incluye `Dockerfile` y `docker-compose.yml` para ejecutar el entorno de desarrollo en un contenedor sin instalar Node.js localmente.
+
+```bash
+# Levantar el contenedor (construye la imagen en el primer uso)
+docker compose up --build
+```
+
+Abrir en el navegador: **http://localhost:5173**
+
+```bash
+# Apagar el contenedor
+docker compose down
+```
+
+El archivo `.dockerignore` excluye `node_modules`, `dist`, `.git` y archivos `.env`.
 
 ---
 
@@ -25,54 +148,11 @@ Muestra artistas de rock y pop, permite buscar, explorar detalles con datos de T
 
 | Ruta | Componente | Descripción |
 |---|---|---|
-| `/` | `Home` | Pantalla de bienvenida con enlace al listado |
-| `/items` | `Items` | Listado con búsqueda/filtro y botón aleatorio |
-| `/items/:id` | `ItemDetail` | Detalle del artista: API, imagen, discografía y favorito |
-| `/favorites` | `Favorites` | Artistas guardados como favoritos |
-| `*` | `NotFound` | Página 404 |
-
----
-
-## Instalación local
-
-```bash
-npm install
-npm run dev
-```
-
-Abrir: **http://localhost:5173**
-
----
-
-## Variables de entorno
-
-```bash
-cp .env.example .env
-```
-
-`.env.example`:
-
-```
-VITE_AUDIODB_KEY=123
-```
-
-La key `123` es pública y funciona sin registro previo.
-
----
-
-## Ejecución con Docker
-
-```bash
-docker compose up --build
-```
-
-Abrir: **http://localhost:5173**
-
-Para apagar:
-
-```bash
-docker compose down
-```
+| `/` | `Home` | Landing con hero, bloques de características y panel de vista previa |
+| `/items` | `Items` | Listado de artistas con búsqueda en tiempo real y botón de artista aleatorio |
+| `/items/:id` | `ItemDetail` | Detalle del artista: imagen, género, país, biografía, discografía y favorito |
+| `/favorites` | `Favorites` | Lista de artistas guardados como favoritos con opción de limpiar |
+| `*` | `NotFound` | Página 404 para cualquier ruta no reconocida |
 
 ---
 
@@ -80,14 +160,50 @@ docker compose down
 
 **TheAudioDB** — `https://www.theaudiodb.com/api/v1/json/{API_KEY}`
 
-| Endpoint | Uso |
-|---|---|
-| `/search.php?s={nombre}` | Información del artista |
-| `/searchalbum.php?s={nombre}` | Álbumes del artista |
+| Endpoint | Método | Uso |
+|---|---|---|
+| `/search.php?s={nombre}` | GET | Información del artista: imagen, género, país, biografía |
+| `/searchalbum.php?s={nombre}` | GET | Lista de álbumes con portada y año de lanzamiento |
 
-El servicio vive en `src/services/audioDbApi.js`.  
-Los datos base locales viven en `src/data/artists.js`.  
-Ningún componente hardcodea listas de artistas.
+El servicio está encapsulado en `src/services/audioDbApi.js` con la función interna `request(endpoint)` que valida `response.ok` antes de retornar el JSON.
+
+Los datos base de los artistas (id, nombre, género, país, descripción) viven en `src/data/artists.js` y no están hardcodeados dentro de ningún componente.
+
+---
+
+## Cómo funciona la aplicación
+
+### Navegación
+
+Toda la navegación interna utiliza `Link`, `NavLink` o `useNavigate` de React Router DOM v6. No se usa la etiqueta `<a>` para ningún enlace interno.
+
+### Búsqueda
+
+En `/items`, el estado del texto de búsqueda se maneja con `useState`. El filtro compara el texto contra `name`, `genre` y `country` de cada artista en tiempo real.
+
+### Artista aleatorio
+
+El botón "✨ Artista aleatorio" en `/items` selecciona un elemento al azar del array de artistas y navega programáticamente a `/items/:id` usando `useNavigate`.
+
+### Detalle del artista
+
+`ItemDetail` obtiene el `id` de la URL mediante `useParams`, busca el artista local correspondiente y consume la API de TheAudioDB con `Promise.all` para cargar imagen, biografía y álbumes en paralelo. Muestra `LoadingMessage` durante la carga y `ErrorMessage` si ocurre un error. Si el artista no existe localmente, muestra un mensaje de "Artista no encontrado".
+
+### Favoritos
+
+`FavoritesContext` implementa un `useReducer` con tres acciones:
+
+| Acción | Efecto |
+|---|---|
+| `ADD_FAVORITE` | Agrega un artista a la lista (evita duplicados) |
+| `REMOVE_FAVORITE` | Elimina un artista por id |
+| `CLEAR_FAVORITES` | Vacía la lista completa |
+
+Los hooks `useFavoritesState()` y `useFavoritesDispatch()` están disponibles en cualquier componente dentro de `FavoritesProvider`. Ambos hooks lanzan un error descriptivo si se usan fuera del Provider.
+
+### Tema claro/oscuro
+
+`ThemeContext` expone `theme` (`"dark"` o `"light"`) y `toggleTheme`. El tema se persiste en `localStorage` bajo la clave `rock-pop-theme`. El cambio se aplica añadiendo la clase `app--dark` o `app--light` al contenedor raíz de la aplicación, lo que activa el conjunto de variables CSS correspondiente sin manipulación directa del DOM.
 
 ---
 
@@ -95,90 +211,124 @@ Ningún componente hardcodea listas de artistas.
 
 ### ArtistCard
 
-Muestra una tarjeta con los datos principales del artista y enlace al detalle.
+Muestra una tarjeta con nombre, género, país, descripción y enlace al detalle del artista.
 
-| Prop | Tipo | Requerida |
-|---|---|---|
-| `artist.id` | `string` | ✓ |
-| `artist.name` | `string` | ✓ |
-| `artist.genre` | `string` | ✓ |
-| `artist.country` | `string` | ✓ |
-| `artist.description` | `string` | ✓ |
+| Prop | Tipo | Requerida | Descripción |
+|---|---|---|---|
+| `artist.id` | `string` | ✓ | Identificador único |
+| `artist.name` | `string` | ✓ | Nombre del artista |
+| `artist.genre` | `string` | ✓ | Género musical |
+| `artist.country` | `string` | ✓ | País de origen |
+| `artist.description` | `string` | ✓ | Descripción breve |
 
 ### SearchBar
 
-Input controlado para filtrar artistas por nombre, género o país.
+Input controlado para búsqueda en tiempo real.
 
-| Prop | Tipo | Requerida |
-|---|---|---|
-| `value` | `string` | ✓ |
-| `onChange` | `func` | ✓ |
+| Prop | Tipo | Requerida | Descripción |
+|---|---|---|---|
+| `value` | `string` | ✓ | Valor actual del campo |
+| `onChange` | `func` | ✓ | Manejador del evento de cambio |
 
 ### AlbumCard
 
-Muestra la portada, nombre y año de un álbum de TheAudioDB.
+Muestra la portada, nombre y año de lanzamiento de un álbum.
 
-| Prop | Tipo | Requerida |
-|---|---|---|
-| `album.idAlbum` | `string` | ✓ |
-| `album.strAlbum` | `string` | ✓ |
-| `album.strAlbumThumb` | `string` | — |
-| `album.intYearReleased` | `string` | — |
+| Prop | Tipo | Requerida | Descripción |
+|---|---|---|---|
+| `album.idAlbum` | `string` | ✓ | Identificador del álbum |
+| `album.strAlbum` | `string` | ✓ | Nombre del álbum |
+| `album.strAlbumThumb` | `string` | — | URL de la portada |
+| `album.intYearReleased` | `string` | — | Año de lanzamiento |
 
 ### FavoriteButton
 
-Agrega o quita un artista de favoritos usando `FavoritesContext`.
+Botón que agrega o quita un artista de favoritos según el estado del contexto.
 
-| Prop | Tipo | Requerida |
-|---|---|---|
-| `artist` | `object` | ✓ |
+| Prop | Tipo | Requerida | Descripción |
+|---|---|---|---|
+| `artist` | `object` | ✓ | Objeto completo del artista (misma forma que en `ArtistCard`) |
 
-Hooks del contexto: `useFavoritesState()`, `useFavoritesDispatch()`.
+Utiliza `useFavoritesState()` para leer el estado y `useFavoritesDispatch()` para emitir acciones.
+
+### ErrorMessage
+
+Muestra un mensaje de error con estilo visual consistente.
+
+| Prop | Tipo | Requerida | Descripción |
+|---|---|---|---|
+| `message` | `string` | ✓ | Texto del error a mostrar |
+
+### FeatureCard
+
+Bloque visual de características usado en la página Home.
+
+| Prop | Tipo | Requerida | Descripción |
+|---|---|---|---|
+| `icon` | `string` | ✓ | Emoji o carácter Unicode |
+| `title` | `string` | ✓ | Título del bloque |
+| `description` | `string` | ✓ | Descripción breve |
 
 ---
 
 ## Rúbrica de cumplimiento
 
-### Junior ✓
+### Requerimientos base ✓
 
 - [x] Proyecto generado con `npm create vite@latest`
-- [x] Uso de React
-- [x] Rutas `/`, `/items`, `/items/:id` con React Router v6
-- [x] Datos base en `src/data/artists.js`
-- [x] `useParams` en `ItemDetail`
-- [x] Navegación con `Link` / `NavLink`, nunca con `<a>`
-- [x] README con instrucciones
-- [ ] Video demo en `/demo/demo-routes.mp4` — **pendiente grabar**
+- [x] Uso de `react-router-dom` v6 (`@6.30.3`)
+- [x] Rutas mínimas: `/`, `/items`, `/items/:id`
+- [x] Datos de artistas separados en `src/data/artists.js` (no hardcodeados en componentes)
+- [x] `useParams` en `ItemDetail` para leer el id de la URL
+- [x] Navegación interna exclusivamente con `Link`, `NavLink` y `useNavigate`
+- [x] README con instrucciones de instalación y ejecución
+- [x] Video de demostración en `/demo/demo-routes.mp4`
 
-### Mid ✓
+### Nivel Junior ✓
 
-- [x] Página 404 (`*` → `NotFound`)
-- [x] Ruta `/favorites`
-- [x] Filtro de búsqueda en `/items` (nombre, género, país)
-- [x] Botón "Artista aleatorio" con `useNavigate`
-- [x] Componentes reutilizables con props documentadas
+- [x] Todos los requerimientos base cumplidos
+- [x] La aplicación funciona y puede ser clonada y ejecutada
 
-### Senior ✓
+### Nivel Mid ✓
 
-- [x] Estado global con Context API + `useReducer` (`FavoritesContext`)
-- [x] PropTypes en 5 componentes: `ArtistCard`, `SearchBar`, `AlbumCard`, `FavoriteButton`, `ErrorMessage`
-- [x] Consumo de API pública: TheAudioDB (imagen, biografía, discografía)
+- [x] Página 404 para rutas no reconocidas (`*` → `NotFound`)
+- [x] Búsqueda y filtro en el listado (por nombre, género y país)
+- [x] Botón "Artista aleatorio" usando `useNavigate`
+- [x] Componentes reutilizables con props documentadas en README
+
+### Nivel Senior ✓
+
+- [x] Estado global con Context API: `FavoritesContext` (favoritos con `useReducer`) y `ThemeContext` (tema claro/oscuro con `localStorage`)
+- [x] PropTypes definidos en 6 componentes: `ArtistCard`, `SearchBar`, `AlbumCard`, `FavoriteButton`, `ErrorMessage`, `FeatureCard`
+- [x] Consumo de API pública: TheAudioDB (imagen, biografía en inglés y discografía completa)
 
 ---
 
-## Video demo
+## Descuentos evitados
 
-> ⚠️ El video de demostración **debe colocarse en `/demo/demo-routes.mp4`** antes de la entrega final.  
-> El archivo no está incluido en el repositorio; el directorio `/demo` existe con un `.gitkeep`.
+| Penalización | Estado |
+|---|---|
+| Uso de `<a>` para navegación interna (−20 pts c/u) | ✓ No se usa `<a>` en ningún archivo de `src/` |
+| README vacío o sin instrucciones (−50 pts) | ✓ README completo en español |
+| Sin video demo (−15 pts) | ✓ Video presente en `demo/demo-routes.mp4` |
+| Datos hardcodeados dentro de componentes (−50 pts) | ✓ Datos únicamente en `src/data/artists.js` |
+| `node_modules` commiteado (−200 pts) | ✓ Ignorado por `.gitignore` |
 
-El video debe mostrar:
+---
 
-1. Ruta `/` — pantalla de bienvenida
+## Video de demostración
+
+El video de demostración se encuentra en **`/demo/demo-routes.mp4`**.
+
+El video muestra:
+
+1. Ruta `/` — landing con hero, características y panel de vista previa
 2. Ruta `/items` — grid de tarjetas de artistas
 3. Filtro de búsqueda en tiempo real
 4. Botón "Artista aleatorio" navegando a un detalle
-5. Ruta `/items/:id` — imagen y álbumes cargados desde la API
-6. Click en "Agregar a favoritos" en el detalle
-7. Ruta `/favorites` — artista guardado visible
-8. "Quitar de favoritos" o "Limpiar todos"
-9. Ruta inexistente → página 404
+5. Ruta `/items/:id` — imagen, género, país, biografía y álbumes cargados desde la API
+6. Click en "Agregar a favoritos" y cambio visual del botón
+7. Ruta `/favorites` — artista guardado visible con opción de limpiar
+8. "Limpiar todos" — vuelta al empty state
+9. Ruta inexistente — página 404
+10. Cambio de tema claro/oscuro desde la Navbar
