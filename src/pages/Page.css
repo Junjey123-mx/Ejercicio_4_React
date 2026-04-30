@@ -1,0 +1,30 @@
+.page {
+  padding: 3rem 1.5rem;
+  text-align: center;
+}
+
+.page h1 {
+  font-size: 2.2rem;
+  margin-bottom: 1rem;
+}
+
+.page__subtitle {
+  color: #888;
+  font-size: 1rem;
+  margin-bottom: 2rem;
+}
+
+.page__btn {
+  display: inline-block;
+  padding: 0.6rem 1.4rem;
+  background: #c084fc;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  transition: background 0.2s;
+}
+
+.page__btn:hover {
+  background: #a855f7;
+}
